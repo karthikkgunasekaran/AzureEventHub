@@ -23,6 +23,8 @@ namespace EventHubSender
 
             cancellationTokenSource.Cancel();
             Console.WriteLine("Cancellation Requested at {0}.", DateTime.Now);
+
+            //Giving time for EventSender method to process the cancellation 
             await Task.Delay(TimeSpan.FromSeconds(65));
             Console.WriteLine("Exiting main program at {0}.", DateTime.Now);
         }
