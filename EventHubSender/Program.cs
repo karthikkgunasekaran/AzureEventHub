@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
@@ -8,25 +9,56 @@ namespace EventHubSender
 {
     class Program
     {
-        private const string connectionString = "<EVENT HUBS NAMESPACE - CONNECTION STRING>";
-        private const string eventHubName = "<EVENT HUB NAME>";
+        private const string connectionString = "<tobefilled>";
+        private const string eventHubName = "<tobefilled>";
 
         static async Task Main()
         {
-            // Create a producer client that you can use to send events to an event hub
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            EventSender(cancellationTokenSource.Token);
+
+            Console.WriteLine("Enter any key to stop sending events!");
+            Console.ReadLine();
+
+            cancellationTokenSource.Cancel();
+            Console.WriteLine("Cancellation Requested at {0}.", DateTime.Now);
+            await Task.Delay(TimeSpan.FromSeconds(65));
+            Console.WriteLine("Exiting main program at {0}.", DateTime.Now);
+        }
+
+        private static async Task EventSender(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Event Sender Started at {0}.", DateTime.Now);
+            do
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    continue;
+
+                await PublishEvents(cancellationToken);
+                await Task.Delay(TimeSpan.FromSeconds(60));
+            } while (!cancellationToken.IsCancellationRequested);
+
+            Console.WriteLine("Event Sender Stopped at {0}.", DateTime.Now);
+        }
+
+        private static async Task PublishEvents(CancellationToken cancellationToken)
+        {
             await using (var producerClient = new EventHubProducerClient(connectionString, eventHubName))
             {
-                // Create a batch of events 
                 using EventDataBatch eventBatch = await producerClient.CreateBatchAsync();
 
-                // Add events to the batch. An event is a represented by a collection of bytes and metadata. 
-                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes("First event")));
-                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes("Second event")));
-                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes("Third event")));
+                var dateTime = DateTime.Now;
 
-                // Use the producer client to send the batch of events to the event hub
+                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(string.Format("First event at {0}", dateTime))));
+                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(string.Format("Second event at {0}", dateTime))));
+                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(string.Format("Third event at {0}", dateTime))));
+
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 await producerClient.SendAsync(eventBatch);
-                Console.WriteLine("A batch of 3 events has been published.");
+                Console.WriteLine("A batch of 3 events has been published at {0}.", dateTime);
             }
         }
     }
