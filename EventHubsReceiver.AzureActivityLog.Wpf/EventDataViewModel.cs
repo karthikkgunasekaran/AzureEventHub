@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace EventHubsReceiver.Wpf
+namespace EventHubsReceiver.AzureActivityLog.Wpf
 {
     public class EventDataViewModel : INotifyPropertyChanged
     {

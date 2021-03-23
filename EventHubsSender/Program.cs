@@ -25,7 +25,7 @@ namespace EventHubsSender
             Console.WriteLine("Cancellation Requested at {0}.", DateTime.Now);
 
             //Giving time for EventSender method to process the cancellation 
-            await Task.Delay(TimeSpan.FromSeconds(65));
+            await Task.Delay(TimeSpan.FromSeconds(15));
             Console.WriteLine("Exiting main program at {0}.", DateTime.Now);
         }
 
@@ -38,7 +38,7 @@ namespace EventHubsSender
                     continue;
 
                 await PublishEvents(cancellationToken);
-                await Task.Delay(TimeSpan.FromSeconds(60));
+                await Task.Delay(TimeSpan.FromSeconds(10));
             } while (!cancellationToken.IsCancellationRequested);
 
             Console.WriteLine("Event Sender Stopped at {0}.", DateTime.Now);

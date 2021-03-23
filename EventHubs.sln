@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHubsReceiver.Console",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHubsSender", "EventHubsSender\EventHubsSender.csproj", "{3E7CBB32-BB98-48A0-B9BA-1344601E23A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHubsReceiver.Wpf", "EventHubsReceiver.Wpf\EventHubsReceiver.Wpf.csproj", "{FD81164A-479D-4B4F-A16E-0599E765D310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHubsReceiver.AzureActivityLog.Wpf", "EventHubsReceiver.AzureActivityLog.Wpf\EventHubsReceiver.AzureActivityLog.Wpf.csproj", "{FD81164A-479D-4B4F-A16E-0599E765D310}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
