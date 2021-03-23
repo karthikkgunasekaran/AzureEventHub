@@ -7,7 +7,7 @@ using Azure.Messaging.EventHubs.Consumer;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Storage.Blobs;
 
-namespace EventHubReceiver
+namespace EventHubsReceiver
 {
     class Program
     {
